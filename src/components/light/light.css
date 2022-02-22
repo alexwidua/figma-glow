@@ -1,0 +1,170 @@
+.wrapper {
+	--color-cable: rgb(70, 70, 70);
+}
+
+.plugBbox {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 48px;
+	height: 48px;
+	cursor: grab;
+	touch-action: none;
+	transform-origin: center bottom;
+}
+
+.plugBbox.pointerDown {
+	cursor: grabbing;
+}
+
+/* Cable and plug */
+.cable {
+	fill: none;
+	stroke: var(--color-cable);
+	stroke-linecap: round;
+	stroke-width: 6;
+}
+
+.cableHighlight {
+	fill: none;
+	filter: blur(0.003px);
+	stroke: rgba(255, 255, 255, 0.5);
+	stroke-linecap: round;
+	stroke-width: 2;
+}
+
+.plug {
+	position: relative;
+	top: 0;
+	left: 50%;
+	width: 24px;
+	height: 32px;
+	background: var(--color-cable);
+	border-radius: 2px 2px 8px 8px;
+	box-shadow: inset 9px 0px 10px rgba(255, 255, 255, 0.25);
+	pointer-events: none;
+	transform: translate3d(-50%, 0, 0);
+}
+
+.plug::after {
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	width: 10px;
+	height: 16px;
+	background: var(--color-cable);
+	border-radius: 0px 0px 2px 2px;
+	box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.1),
+		inset 3px 0px 3px rgba(255, 255, 255, 0.3);
+	content: '';
+	transform: translateX(-50%);
+}
+
+.connector {
+	position: absolute;
+	top: -14px;
+	width: 4px;
+	height: 14px;
+	background: radial-gradient(
+			118.42% 11.66% at 21.05% 2.07%,
+			#ffffff 0%,
+			rgba(230, 194, 136, 0) 92.71%
+		),
+		linear-gradient(270deg, #a78337 0%, #e6bf7f 65.79%),
+		linear-gradient(180deg, #ebbe7b 0%, #d1be8b 100%);
+	border-radius: 6px 6px 0px 0px;
+	box-shadow: inset 0px -2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.connector.left {
+	left: 16px;
+}
+.connector.right {
+	right: 16px;
+}
+
+/* Light bulb */
+.lightBulb {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 128px;
+	height: 128px;
+	backdrop-filter: blur(10px);
+	border-radius: 100%;
+	box-shadow: inset 3px 4px 8px rgba(255, 255, 255, 0.75),
+		inset 0px 0px 45px rgba(255, 255, 255, 0.5);
+	transform: translate3d(-50%, -50%, 0);
+}
+
+.filament {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	fill: none;
+	transform: translate3d(-50%, 0, 0);
+}
+
+.filamentStroke {
+	box-shadow: none;
+	fill: none;
+	stroke: #797979;
+	stroke-width: 2px;
+	transition: stroke 2s, box-shadow 2s;
+}
+
+.filamentStroke.plugged {
+	box-shadow: 0px 0px 7px #ffd43e;
+	stroke: #ff8800;
+	transition: stroke 0.2s, box-shadow 0.2s;
+}
+
+.innerGlow {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 76px;
+	height: 76px;
+	border-radius: 100%;
+	filter: blur(12px);
+	opacity: 0;
+	transform: translate3d(-50%, -50%, 0) translateY(12px);
+	transition: box-shadow 1.5s, opacity 1.5s;
+}
+
+.innerGlow.plugged {
+	opacity: 0.9;
+	transition: box-shadow 0.1s, opacity 0.1s;
+}
+
+.fill {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 128px;
+	height: 128px;
+	border-radius: 100%;
+	cursor: s-resize;
+	touch-action: none;
+	transform: translate3d(-50%, -50%, 0);
+	transition: box-shadow 1.5s, opacity 1.5s;
+}
+
+.fill.plugged {
+	transition: box-shadow 0.1s, opacity 0.1s;
+}
+
+.badge {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: inline-block;
+	padding: 1px 6px;
+	background: var(--color-blue);
+	border-radius: 3px;
+	color: #fff;
+	font-size: 10px;
+	pointer-events: none;
+	transform: translate3d(-50%, -50%, 0) translateY(-86px);
+	white-space: nowrap;
+}

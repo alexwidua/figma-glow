@@ -1,0 +1,54 @@
+.colorSwatch {
+	position: absolute;
+	z-index: var(--z-index-1);
+	width: 32px;
+	height: 32px;
+	left: 1.5rem;
+	bottom: 1.5rem;
+}
+.disabled {
+	opacity: var(--opacity-30);
+}
+
+.color {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+	border: 2px solid #fff;
+	box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
+	pointer-events: none;
+}
+.colorFill {
+	flex-grow: 1;
+}
+
+.hexColorSelector {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+
+.hexColorSelector:hover ~ .color {
+	opacity: 0.9;
+}
+
+.hexColorSelector:focus ~ .color {
+	border: 2px solid var(--color-blue);
+}
+
+.disabled .hexColorSelector {
+	cursor: not-allowed;
+}
+
+.input::-webkit-inner-spin-button,
+.input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+}
