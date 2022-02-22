@@ -7,20 +7,20 @@ import { stripHash } from './utils/color'
 import { Light } from './components/light/light'
 import { ColorInput } from './components/color-input/color-input'
 import { Menu } from './components/menu/menu'
-import { DEFAULT_BRIGHTNESS, DEBOUNCE_MS } from './constants'
+import { DEFAULT_INTENSITY, DEBOUNCE_MS } from './constants'
 import { OptionKey } from './components/menu/menu'
 import { SelectionState } from './utils/selection'
 import styles from './ui.css'
 
 function Plugin() {
 	const containerRef = useRef(null)
-	const [brightness, setBrightness] = useState(DEFAULT_BRIGHTNESS)
+	const [intensity, setIntensity] = useState(DEFAULT_INTENSITY)
 	const [glowColor, setGlowColor] = useState('ffffff')
 	const [matchFillColor, setMatchFillColor] = useState('true')
 
-	const handleBrightnessChange = useCallback((brightness: number) => {
-		setBrightness(brightness)
-		debounceEmitEvent('BRIGHTNESS_CHANGE_FROM_UI', brightness)
+	const handleIntensityChange = useCallback((intensity: number) => {
+		setIntensity(intensity)
+		debounceEmitEvent('INTENSITY_CHANGE_FROM_UI', intensity)
 	}, [])
 
 	const handleGlowColorChange = useCallback((color: string) => {
@@ -81,17 +81,17 @@ function Plugin() {
 		<div className={styles.container} ref={containerRef}>
 			<Light
 				glowColor={glowColor}
-				brightness={brightness}
+				intensity={intensity}
 				matchFillColor={matchFillColor ? true : false}
-				onBrightnessChange={handleBrightnessChange}
+				onIntensityChange={handleIntensityChange}
 			/>
 			<Menu
 				containerRef={containerRef}
 				selectionState={selectionState}
-				brightness={brightness}
+				intensity={intensity}
 				matchFillColor={matchFillColor}
 				onOptionChange={handleGlowOptionsChange}
-				onBrightnessChange={handleBrightnessChange}
+				onIntensityChange={handleIntensityChange}
 				onApplyButtonClick={() => emit('APPLY')}
 			/>
 			<ColorInput

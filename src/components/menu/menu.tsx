@@ -17,8 +17,8 @@ import {
 	VerticalSpace
 } from '@create-figma-plugin/ui'
 import {
-	brightnessToPercentage,
-	percentageToRawBrightnessValue
+	intensityToPercentage,
+	percentageToRawIntensityValue
 } from '../light/light'
 
 import { Panel, Tooltip } from '@alexwidua/create-figma-plugin-components'
@@ -29,10 +29,10 @@ import { SelectionState } from '../../utils/selection'
 interface MenuProps {
 	containerRef: RefObject<HTMLDivElement>
 	selectionState: SelectionState
-	brightness: number
+	intensity: number
 	matchFillColor: string
 	onOptionChange: (name: OptionKey, value: string) => void
-	onBrightnessChange: (value: number) => void
+	onIntensityChange: (value: number) => void
 	onApplyButtonClick: () => void
 }
 
@@ -41,10 +41,10 @@ export type OptionKey = 'match-fill-color'
 export function Menu({
 	containerRef,
 	selectionState,
-	brightness,
+	intensity,
 	matchFillColor,
 	onOptionChange,
-	onBrightnessChange,
+	onIntensityChange,
 	onApplyButtonClick
 }: MenuProps) {
 	const [optionsPanelOpen, setOptionsPanelOpen] = useState<boolean>(false)
@@ -54,21 +54,21 @@ export function Menu({
 		{ value: 'true', children: <IconControlCheckboxChecked12 /> }
 	]
 
-	const [tempBrightness, setTempBrightness] = useState('0%')
-	const validateBrightness = (value: null | number) => {
+	const [tempIntensity, setTempIntensity] = useState('0%')
+	const validateIntensity = (value: null | number) => {
 		if (value === null) return null
 		const valid = value >= 0 && value <= 100
 		if (valid) {
-			const normalized = percentageToRawBrightnessValue(value)
-			onBrightnessChange(normalized)
+			const normalized = percentageToRawIntensityValue(value)
+			onIntensityChange(normalized)
 		}
 
 		return valid
 	}
 
 	useEffect(() => {
-		setTempBrightness(`${brightnessToPercentage(brightness)}%`)
-	}, [brightness])
+		setTempIntensity(`${intensityToPercentage(intensity)}%`)
+	}, [intensity])
 
 	const effectIsApplicable =
 		selectionState !== 'INVALID' && selectionState !== 'EMPTY'
@@ -84,20 +84,20 @@ export function Menu({
 				onClose={() => setOptionsPanelOpen(false)}>
 				<Container style={{ padding: 16 }}>
 					<TextboxNumeric
-						name={'brightness'}
+						name={'intensity'}
 						suffix={'%'}
 						maximum={100}
 						minimum={0}
 						icon={
-							<IconBrightness16
-								v={1 - brightnessToPercentage(brightness) / 50}
+							<IconIntensity16
+								v={1 - intensityToPercentage(intensity) / 50}
 							/>
 						}
 						onInput={(e: JSX.TargetedEvent<HTMLInputElement>) =>
-							setTempBrightness(e.currentTarget.value)
+							setTempIntensity(e.currentTarget.value)
 						}
-						value={tempBrightness}
-						validateOnBlur={validateBrightness}
+						value={tempIntensity}
+						validateOnBlur={validateIntensity}
 						noBorder
 					/>
 					<VerticalSpace space={'small'} />
@@ -236,7 +236,7 @@ function IconButton<Name extends string>({
 	)
 }
 
-const IconBrightness16 = ({ v = 0 }) => {
+const IconIntensity16 = ({ v = 0 }) => {
 	return (
 		<svg
 			width="16"

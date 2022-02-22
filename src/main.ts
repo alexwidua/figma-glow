@@ -13,7 +13,7 @@ import {
 	PLUGIN_WIDTH,
 	PLUGIN_HEIGHT,
 	VALID_NODE_TYPES,
-	DEFAULT_BRIGHTNESS
+	DEFAULT_INTENSITY
 } from './constants'
 import { OptionKey } from './components/menu/menu'
 
@@ -29,7 +29,7 @@ export default function () {
 		[]
 
 	// options
-	let brightnessFromUI: number = DEFAULT_BRIGHTNESS
+	let intensityFromUI: number = DEFAULT_INTENSITY
 	let colorFromUI: string | undefined = undefined
 	let matchFillColor: boolean = true
 
@@ -179,7 +179,7 @@ export default function () {
 			glowColor,
 			matchFillColor,
 			size,
-			brightness: brightnessFromUI
+			intensity: intensityFromUI
 		})
 		node.effects = glow
 		if (fillCallback) fillCallback(glowColor)
@@ -225,8 +225,8 @@ export default function () {
 		colorFromUI = value
 		handleSelectionChange()
 	})
-	on('BRIGHTNESS_CHANGE_FROM_UI', (value) => {
-		brightnessFromUI = value
+	on('INTENSITY_CHANGE_FROM_UI', (value) => {
+		intensityFromUI = value
 		handleSelectionChange()
 	})
 	on(

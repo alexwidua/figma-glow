@@ -9,31 +9,31 @@ import { createClassName } from '@create-figma-plugin/ui'
 import { normalize, denormalize, clamp } from '../../utils/math'
 import { brightenColor } from '../../utils/color'
 import { getGlowLayers } from '../../utils/glow'
-import { PLUGIN_HEIGHT, BRIGHTNESS_FACTOR } from '../../constants'
+import { PLUGIN_HEIGHT, INTENSITY_FACTOR } from '../../constants'
 import styles from './light.css'
 
 interface LightProps {
 	glowColor: string
-	brightness: number
+	intensity: number
 	matchFillColor: boolean
-	onBrightnessChange: (brightness: number) => void
+	onIntensityChange: (intensity: number) => void
 }
 
-const BRIGHTNESS_SCRUB_RANGE = 50
+const INTENSITY_SCRUB_RANGE = 50
 
-export function brightnessToPercentage(value: number) {
-	return Math.round(normalize(value, 0, BRIGHTNESS_FACTOR) * 100)
+export function intensityToPercentage(value: number) {
+	return Math.round(normalize(value, 0, INTENSITY_FACTOR) * 100)
 }
 
-export function percentageToRawBrightnessValue(value: number) {
-	return denormalize(value, 0, BRIGHTNESS_FACTOR) / 100
+export function percentageToRawIntensityValue(value: number) {
+	return denormalize(value, 0, INTENSITY_FACTOR) / 100
 }
 
 export function Light({
 	glowColor,
-	brightness,
+	intensity,
 	matchFillColor,
-	onBrightnessChange
+	onIntensityChange
 }: LightProps) {
 	const [pluggedIn, setPluggedIn] = useState(true)
 	const [plugPosition, setPlugPosition] = useState({ x: 0, y: 0 })
@@ -56,19 +56,16 @@ export function Light({
 	}, [pluggedIn])
 
 	/**
-	 * Handle brightness scrub
+	 * Handle intensity scrub
 	 */
 
 	const [isScrubbing, setIsScrubbing] = useState(false)
 	const scrub: any = useDrag(
 		({ down, offset: [_, oy] }) => {
 			const value =
-				normalize(
-					-oy,
-					-BRIGHTNESS_SCRUB_RANGE,
-					BRIGHTNESS_SCRUB_RANGE
-				) * BRIGHTNESS_FACTOR
-			onBrightnessChange(value)
+				normalize(-oy, -INTENSITY_SCRUB_RANGE, INTENSITY_SCRUB_RANGE) *
+				INTENSITY_FACTOR
+			onIntensityChange(value)
 			setIsScrubbing(down)
 		},
 		{
@@ -124,12 +121,12 @@ export function Light({
 
 	const lightBulbFillStyle = {
 		background: matchFillColor ? `${brightenedColor}` : `#${glowColor}`,
-		opacity: pluggedIn ? normalize(brightness, 0, BRIGHTNESS_FACTOR) : 0,
+		opacity: pluggedIn ? normalize(intensity, 0, INTENSITY_FACTOR) : 0,
 		boxShadow: pluggedIn
 			? getGlowLayers({
 					glowColor,
 					matchFillColor,
-					brightness
+					intensity
 			  })
 					.map(
 						(glow) =>
@@ -209,7 +206,7 @@ export function Light({
 			<div
 				className={styles.badge}
 				style={{ opacity: isScrubbing ? 1 : 0 }}>
-				Brightness: {brightnessToPercentage(brightness)}%
+				Intensity: {intensityToPercentage(intensity)}%
 			</div>
 		</div>
 	)

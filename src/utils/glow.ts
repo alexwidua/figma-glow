@@ -1,5 +1,3 @@
-import { normalize } from './math'
-import chroma, { Color } from 'chroma-js'
 import { hexToGL, brightenColor } from './color'
 
 const NUM_SHADOW_LAYERS = 6
@@ -9,20 +7,20 @@ interface GlowProps {
 	glowColor: string
 	matchFillColor: boolean
 	size?: { width: number; height: number }
-	brightness?: number
+	intensity?: number
 }
 
 export function getGlowLayers({
 	glowColor,
 	matchFillColor,
 	size = { width: 50, height: 50 },
-	brightness = 8
+	intensity = 8
 }: GlowProps) {
 	// scale effect with node size
 	const { width, height } = size
 	const longestSide = Math.max(width, height)
 	const factor = longestSide / 100
-	const scale = brightness * factor
+	const scale = intensity * factor
 
 	const brightened = brightenColor(glowColor)
 	const mappedGlowColor = hexToGL(glowColor)

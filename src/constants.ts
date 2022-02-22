@@ -14,7 +14,7 @@ export const VALID_NODE_TYPES: Array<NodeType> = [
 	'TEXT',
 	'VECTOR'
 ]
-export const BRIGHTNESS_FACTOR = 12
-export const DEFAULT_BRIGHTNESS = 9
+export const INTENSITY_FACTOR = 12
+export const DEFAULT_INTENSITY = 9
 
 export const DEBOUNCE_MS = 100
