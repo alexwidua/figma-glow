@@ -17,7 +17,19 @@ import {
 } from './constants'
 import { OptionKey } from './components/menu/menu'
 
-export type GlowNode = FrameNode | RectangleNode
+export type SupportsEffectLayersNode =
+	| BooleanOperationNode
+	| InstanceNode
+	| ComponentNode
+	| EllipseNode
+	| FrameNode
+	| LineNode
+	| PolygonNode
+	| RectangleNode
+	| StarNode
+	| TextNode
+	| VectorNode
+
 export type SelectionChangeEvent = {
 	state: SelectionState
 	fill: string | undefined
@@ -67,8 +79,9 @@ export default function () {
 						const fills =
 							node.type === 'GROUP'
 								? null
-								: (node as GlowNode).fills
-						const effects = (node as GlowNode).effects
+								: (node as SupportsEffectLayersNode).fills
+						const effects = (node as SupportsEffectLayersNode)
+							.effects
 						existingNodeEffects = [
 							...existingNodeEffects,
 							{ id, fills, effects }
@@ -86,7 +99,9 @@ export default function () {
 				if (nodeRefs.length) {
 					resetEverythingAndRestorePrevProps()
 				}
-				const node = selection[0] as GlowNode | GroupNode
+				const node = selection[0] as
+					| SupportsEffectLayersNode
+					| GroupNode
 				if (node.type === 'GROUP') {
 					recursivelyUpdateGlowLayers(node.children)
 					data = { ...data, fill: 'MIXED' }
@@ -119,8 +134,8 @@ export default function () {
 				} else {
 					const id = node.id
 					nodeRefs = [...nodeRefs, id]
-					const fills = (node as GlowNode).fills
-					const effects = (node as GlowNode).effects
+					const fills = (node as SupportsEffectLayersNode).fills
+					const effects = (node as SupportsEffectLayersNode).effects
 					existingNodeEffects = [
 						...existingNodeEffects,
 						{ id, fills, effects }
@@ -137,7 +152,7 @@ export default function () {
 
 	function updateGlowLayers(id: any, fillCallback?: any) {
 		let glowColor
-		const node = figma.getNodeById(id) as GlowNode
+		const node = figma.getNodeById(id) as SupportsEffectLayersNode
 		if (!node) return
 		const fills = node.fills as Paint[]
 		const hasSolidPaintLayer = findSolidPaintLayer(fills)
@@ -192,8 +207,10 @@ export default function () {
 				(node) => node.id === id
 			)
 			if (restorePrevEffects) {
-				;(node as GlowNode).effects = restorePrevEffects.effects
-				;(node as GlowNode).fills = restorePrevEffects.fills
+				;(node as SupportsEffectLayersNode).effects =
+					restorePrevEffects.effects
+				;(node as SupportsEffectLayersNode).fills =
+					restorePrevEffects.fills
 			}
 		}
 	}

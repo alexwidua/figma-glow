@@ -7,9 +7,10 @@ import { stripHash } from './utils/color'
 import { Light } from './components/light/light'
 import { ColorInput } from './components/color-input/color-input'
 import { Menu } from './components/menu/menu'
-import { DEFAULT_INTENSITY, DEBOUNCE_MS } from './constants'
+import { DEFAULT_INTENSITY, DEBOUNCE_MS, DEFAULT_COLOR } from './constants'
 import { OptionKey } from './components/menu/menu'
 import { SelectionState } from './utils/selection'
+import { SelectionChangeEvent } from './main'
 import styles from './ui.css'
 
 function Plugin() {
@@ -57,25 +58,22 @@ function Plugin() {
 		on('SELECTION_CHANGE', handleSelectionChange)
 	}, [])
 
-	const handleSelectionChange = useCallback(
-		(data: { state: SelectionState; fill: string }) => {
-			const { state, fill } = data
-			let color = 'ffffff'
-			let mixed = false
-			setSelectionState(state)
-			if (fill) {
-				if (fill === 'MIXED') {
-					mixed = true
-				} else {
-					color = stripHash(fill)
-				}
+	const handleSelectionChange = useCallback((data: SelectionChangeEvent) => {
+		const { state, fill } = data
+		let color = DEFAULT_COLOR
+		let mixed = false
+		setSelectionState(state)
+		if (fill) {
+			if (fill === 'MIXED') {
+				mixed = true
+			} else {
+				color = stripHash(fill)
 			}
-			setHasMixedColors(mixed)
-			if (state === 'EMPTY') return
-			setGlowColor(color)
-		},
-		[]
-	)
+		}
+		setHasMixedColors(mixed)
+		if (state === 'EMPTY') return
+		setGlowColor(color)
+	}, [])
 
 	return (
 		<div className={styles.container} ref={containerRef}>
