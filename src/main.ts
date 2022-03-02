@@ -13,7 +13,8 @@ import {
 	PLUGIN_WIDTH,
 	PLUGIN_HEIGHT,
 	VALID_NODE_TYPES,
-	DEFAULT_INTENSITY
+	DEFAULT_INTENSITY,
+	DEFAULT_MATCH_FILL_COLOR
 } from './constants'
 import { OptionKey } from './components/menu/menu'
 
@@ -43,7 +44,7 @@ export default function () {
 	// options
 	let intensityFromUI: number = DEFAULT_INTENSITY
 	let colorFromUI: string | undefined = undefined
-	let matchFillColor: boolean = true
+	let matchFillColor: boolean = DEFAULT_MATCH_FILL_COLOR
 
 	let APPLIED_GLOW_EFFECTS: true | undefined
 
@@ -151,7 +152,7 @@ export default function () {
 	}
 
 	function updateGlowLayers(id: any, fillCallback?: any) {
-		let glowColor
+		let glowColor = colorFromUI || '#fff'
 		const node = figma.getNodeById(id) as SupportsEffectLayersNode
 		if (!node) return
 		const fills = node.fills as Paint[]
@@ -176,16 +177,6 @@ export default function () {
 						color: { r: toGL.r, g: toGL.g, b: toGL.b }
 					}
 				]
-			}
-		} else {
-			if (figma.currentPage.selection.length === 1) {
-				return figma.notify(
-					`Selected element doesn't contain a solid fill layer.`
-				)
-			} else {
-				return figma.notify(
-					`One of the selected elements doesn't contain a solid fill layer.`
-				)
 			}
 		}
 

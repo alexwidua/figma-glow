@@ -7,7 +7,12 @@ import { stripHash } from './utils/color'
 import { Light } from './components/light/light'
 import { ColorInput } from './components/color-input/color-input'
 import { Menu } from './components/menu/menu'
-import { DEFAULT_INTENSITY, DEBOUNCE_MS, DEFAULT_COLOR } from './constants'
+import {
+	DEFAULT_INTENSITY,
+	DEBOUNCE_MS,
+	DEFAULT_COLOR,
+	DEFAULT_MATCH_FILL_COLOR
+} from './constants'
 import { OptionKey } from './components/menu/menu'
 import { SelectionState } from './utils/selection'
 import { SelectionChangeEvent } from './main'
@@ -16,8 +21,10 @@ import styles from './ui.css'
 function Plugin() {
 	const containerRef = useRef(null)
 	const [intensity, setIntensity] = useState(DEFAULT_INTENSITY)
-	const [glowColor, setGlowColor] = useState('ffffff')
-	const [matchFillColor, setMatchFillColor] = useState('true')
+	const [glowColor, setGlowColor] = useState(DEFAULT_COLOR)
+	const [matchFillColor, setMatchFillColor] = useState(
+		DEFAULT_MATCH_FILL_COLOR ? 'true' : ''
+	)
 
 	const handleIntensityChange = useCallback((intensity: number) => {
 		setIntensity(intensity)
@@ -38,6 +45,19 @@ function Plugin() {
 					value: value === 'true'
 				})
 			}
+		},
+		[]
+	)
+
+	const handleMatchFillColorChange = useCallback(
+		(matchFillColor: boolean) => {
+			const key = 'match-fill-color'
+			const value = matchFillColor ? '' : 'true'
+			setMatchFillColor(value)
+			emit('OPTION_CHANGE_FROM_UI', {
+				key,
+				value: value === 'true'
+			})
 		},
 		[]
 	)
@@ -82,6 +102,9 @@ function Plugin() {
 				intensity={intensity}
 				matchFillColor={matchFillColor ? true : false}
 				onIntensityChange={handleIntensityChange}
+				onMatchFillColorChange={() =>
+					handleMatchFillColorChange(matchFillColor === 'true')
+				}
 			/>
 			<Menu
 				containerRef={containerRef}

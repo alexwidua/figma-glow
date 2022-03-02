@@ -19,5 +19,6 @@ export const DEFAULT_COLOR = 'ffffff'
 
 export const INTENSITY_FACTOR = 12
 export const DEFAULT_INTENSITY = 9
+export const DEFAULT_MATCH_FILL_COLOR = false
 
 export const DEBOUNCE_MS = 100
