@@ -144,7 +144,7 @@
 	width: 128px;
 	height: 128px;
 	border-radius: 100%;
-	cursor: s-resize;
+	cursor: ns-resize;
 	touch-action: none;
 	transform: translate3d(-50%, -50%, 0);
 	transition: box-shadow 1.5s, opacity 1.5s;

@@ -17,6 +17,7 @@ interface LightProps {
 	intensity: number
 	matchFillColor: boolean
 	onIntensityChange: (intensity: number) => void
+	onMatchFillColorChange: () => void
 }
 
 const INTENSITY_SCRUB_RANGE = 50
@@ -33,7 +34,8 @@ export function Light({
 	glowColor,
 	intensity,
 	matchFillColor,
-	onIntensityChange
+	onIntensityChange,
+	onMatchFillColorChange
 }: LightProps) {
 	const [pluggedIn, setPluggedIn] = useState(true)
 	const [plugPosition, setPlugPosition] = useState({ x: 0, y: 0 })
@@ -201,6 +203,7 @@ export function Light({
 					pluggedIn && !dragPointerDown ? styles.plugged : null
 				])}
 				style={lightBulbFillStyle}
+				onDoubleClickCapture={onMatchFillColorChange}
 				{...scrub()}
 			/>
 			<div
